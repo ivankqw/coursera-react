@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
+import { ListGroup, ListGroupItem } from 'reactstrap';
+import DishDetail from './DishdetailComponent';
 
 class Menu extends Component {
     constructor(props) {
@@ -14,22 +16,29 @@ class Menu extends Component {
         this.setState({selectedDish: dish});
     }
 
-    renderDish(dish) {
-        if (dish !=null) {
-            return(
-                <Card>
-                    <CardImg width="100%" src={dish.image} alt={dish.name}/>      
-                    <CardBody>
-                        <CardTitle> {dish.name}</CardTitle>
-                            <CardText> {dish.description}</CardText>
-                        </CardBody>                
-                </Card>
+    renderComments(commentsArr) {
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        if (commentsArr == null) { return ( <div></div> )}
+        const comments = commentsArr.map((comment) => {
+            return (
+                <>
+                <ListGroupItem key={comment.id} className="border-0">
+                    {comment.comment}
+                </ListGroupItem>
+                <ListGroupItem key={comment.id} className="border-0">
+                    -- {comment.author} , {months[new Date(comment.date).getMonth()]} {new Date(comment.date).getDate()}, {new Date(comment.date).getFullYear()}
+                </ListGroupItem>
+                </>
             )
-        } else {
-            return(
-                <div></div>
-            )
-        }
+        })
+        return (
+            <div className="col-12 col-md-5 m-1">
+            <ListGroup> 
+            <h4>Comments</h4>
+                {comments}
+            </ListGroup>
+            </div>
+        )
     }
 
     render() {
@@ -51,12 +60,11 @@ class Menu extends Component {
         return (
             <div className="container">
                 <div className="row">
-                        {menu}
+                    {menu}
                 </div>
                 <div className="row">
-                    <div className="col-12 col-md m-1">
-                    {this.renderDish(this.state.selectedDish)}
-                    </div>
+                    <DishDetail selectedDish={this.state.selectedDish} />
+                    {this.renderComments(this.state.selectedDish ? this.state.selectedDish.comments : null)}
                 </div>
             </div>
         );
