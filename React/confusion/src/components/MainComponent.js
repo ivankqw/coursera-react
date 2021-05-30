@@ -24,8 +24,9 @@ class Main extends Component {
 
   render() {
     const HomePage = () => {
+      return(
       <Home />
-    }
+      )}
     return (
       <div>
         <Header />
@@ -33,7 +34,7 @@ class Main extends Component {
           <Route path="/home" component={HomePage} />
           <Route exact path="/menu" component={() => <Menu dishes={this.state.dishes} />} />
           <Redirect to="/home"/>
-        </Switch>
+        </Switch> 
         <Footer />
       </div>
     );
