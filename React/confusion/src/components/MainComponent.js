@@ -24,10 +24,6 @@ class Main extends Component {
     super(props);
   }
 
-  onDishSelect(dishId) {
-    this.setState({ selectedDish: dishId });
-  }
-
   render() {
     const DishWithId = ({match}) => {
       return(
