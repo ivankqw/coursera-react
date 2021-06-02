@@ -26,7 +26,7 @@ class CommentFile extends Component {
     handleSubmit(values) {
         this.toggleModal();
         console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
 
     }
 
@@ -117,7 +117,7 @@ function RenderDish({ dish }) {
     }
 }
 
-function RenderComments({ commentsArr }) {
+function RenderComments({ commentsArr, addComment, dishId }) {
     if (commentsArr == null) { return (<div></div>) }
     const comments = commentsArr.map((comment) => {
         return (
@@ -138,7 +138,7 @@ function RenderComments({ commentsArr }) {
                 {comments}
             </ListGroup>
             <>
-                <CommentFile />
+                <CommentFile dishId={dishId} addComment={addComment}/>
             </>
         </div>
     )
@@ -163,7 +163,10 @@ const DishDetail = (props) => {
                     <RenderDish dish={props.dish} />
                 </div>
                 <div className="col-12 col-md-5 m-1">
-                    <RenderComments commentsArr={props.comments} />
+                    <RenderComments commentsArr={props.comments}
+                    addComment={props.addComment}
+                    dishId={props.dish.id} 
+                    />
                 </div>
 
             </div>
