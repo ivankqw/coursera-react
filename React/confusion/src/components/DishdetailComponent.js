@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
 import {baseUrl} from '../shared/baseUrl';
-
+import {FadeTransform, Fade, Stagger} from 'react-animation-components';
 
 
 const required = (val) => val && val.length;
@@ -105,6 +105,10 @@ class CommentFile extends Component {
 function RenderDish({ dish }) {
     if (dish != null) {
         return (
+            <FadeTransform in 
+                transfromProps={{
+                    exitTransform: 'scale(0.5) translateY(-50%)'
+                }}>
             <Card>
                 <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
                 <CardBody>
@@ -112,6 +116,7 @@ function RenderDish({ dish }) {
                     <CardText> {dish.description}</CardText>
                 </CardBody>
             </Card>
+            </FadeTransform>
         )
     } else {
         return (
@@ -125,12 +130,14 @@ function RenderComments({ commentsArr, postComment, dishId }) {
     const comments = commentsArr.map((comment) => {
         return (
             <>
+                <Fade in>
                 <ListGroupItem key={comment.id} className="border-0">
                     {comment.comment}
                 </ListGroupItem>
                 <ListGroupItem key={comment.id} className="border-0">
                     -- {comment.author} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(comment.date)))}
                 </ListGroupItem>
+                </Fade>
             </>
         )
     })
@@ -138,7 +145,9 @@ function RenderComments({ commentsArr, postComment, dishId }) {
         <div>
             <ListGroup>
                 <h4>Comments</h4>
+                <Stagger in>
                 {comments}
+                </Stagger>
             </ListGroup>
             <>
                 <CommentFile dishId={dishId} postComment={postComment} />
